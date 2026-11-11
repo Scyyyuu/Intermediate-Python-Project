@@ -1,8 +1,3 @@
-"""
-Expense Tracker - a command-line app that saves your data to a JSON file.
-
-Run:  python expense_tracker.py
-"""
 import json
 from dataclasses import dataclass, asdict
 from datetime import date
@@ -25,9 +20,8 @@ class ExpenseTracker:
         self.expenses = []
         self.load()
 
-    # ---------- storage ----------
-    def load(self):
-        """Read expenses from the JSON file. No file yet? Start empty."""
+
+    def load(self):
         try:
             with open(self.filename, "r", encoding="utf-8") as f:
                 self.expenses = [Expense(**item) for item in json.load(f)]
@@ -41,7 +35,7 @@ class ExpenseTracker:
         with open(self.filename, "w", encoding="utf-8") as f:
             json.dump([asdict(e) for e in self.expenses], f, indent=2)
 
-    # ---------- actions ----------
+    
     def add(self, amount, category, description, when=None):
         when = when or date.today().isoformat()
         self.expenses.append(Expense(amount, category.lower(), description, when))
@@ -53,7 +47,7 @@ class ExpenseTracker:
         return removed
 
     def summary(self):
-        """Return (totals_by_category, biggest_expense, grand_total)."""
+        
         totals = {}
         for e in self.expenses:
             totals[e.category] = totals.get(e.category, 0) + e.amount
@@ -61,7 +55,6 @@ class ExpenseTracker:
         return totals, biggest, sum(totals.values())
 
 
-# ---------- user interface helpers ----------
 def ask_amount():
     while True:
         raw = input("Amount: ").strip()
